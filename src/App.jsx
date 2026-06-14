@@ -1,13 +1,17 @@
-import { useState } from "react";
 import "./App.css";
-import CustomProps from "./CustomProps";
+import Counter from "./counter";
+import Visibility from "./visibility";
+import Input from "./input";
+import ColorChange from "./colorChange";
 
 function App() {
   return (
-    <>
-      <CustomProps title={"chłopaki"} hi={"Cześć"} />
-      <CustomProps title={"developers"} hi={"Hello"} />
-    </>
+    <div className="container">
+      <Counter />
+      <Visibility />
+      <Input string="initial_value" />
+      <ColorChange />
+    </div>
   );
 }
 
