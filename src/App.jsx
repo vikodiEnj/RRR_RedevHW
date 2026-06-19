@@ -1,12 +1,10 @@
-import { useState } from "react";
 import "./App.css";
-import CustomProps from "./CustomProps";
+import MainComponent from "./mainComponent";
 
 function App() {
   return (
     <>
-      <CustomProps title={"chłopaki"} hi={"Cześć"} />
-      <CustomProps title={"developers"} hi={"Hello"} />
+      <MainComponent />
     </>
   );
 }
