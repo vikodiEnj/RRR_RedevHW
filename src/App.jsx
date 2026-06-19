@@ -1,12 +1,11 @@
 import { useState } from "react";
 import "./App.css";
-import CustomProps from "./CustomProps";
+import LifecycleComponent from "./LifecycleComponent";
 
 function App() {
   return (
     <>
-      <CustomProps title={"chłopaki"} hi={"Cześć"} />
-      <CustomProps title={"developers"} hi={"Hello"} />
+      <LifecycleComponent />
     </>
   );
 }
