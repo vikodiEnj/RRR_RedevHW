@@ -1,13 +1,22 @@
-import { useState } from "react";
 import "./App.css";
+import myContext from "./ThemeContext";
 import CustomProps from "./CustomProps";
+import { useState } from "react";
 
-function App() {
+ function App() {
+  const [state, setState] = useState("Light");
+
   return (
-    <>
-      <CustomProps title={"chłopaki"} hi={"Cześć"} />
-      <CustomProps title={"developers"} hi={"Hello"} />
-    </>
+    <myContext.Provider
+      value={{
+        theme: state,
+        toggle: () => setState(state === "Light" ? "Dark" : "Light"),
+      }}
+    >
+      <div className={`app ${state === "Dark" ? "dark" : "light"}`}>
+        <CustomProps />
+      </div>
+    </myContext.Provider>
   );
 }
 
