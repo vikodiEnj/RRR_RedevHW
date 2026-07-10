@@ -5,11 +5,11 @@ import GoodsBusket from "./goodsBusket";
 
 function App() {
   return (
-    <>
+    <div className="app">
       <UserProfile />
       <TaskList />
       <GoodsBusket />
-    </>
+    </div>
   );
 }
 

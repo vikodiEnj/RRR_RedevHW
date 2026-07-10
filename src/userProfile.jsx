@@ -1,4 +1,5 @@
 import { useState } from "react";
+import UserInfo from "./userInfo";
 
 const UserProfile = () => {
   const [user, setUser] = useState({
@@ -6,6 +7,7 @@ const UserProfile = () => {
     age: 25,
     isActive: true,
   });
+  const [counter, setCounter] = useState(0);
   const arr = [
     "Олег",
     "Жора",
@@ -19,11 +21,14 @@ const UserProfile = () => {
     "Лена",
   ];
   return (
-    <>
-      <h1>
-        Имя: {user.name}, Возраст: {user.age}, Активен:{" "}
-        {user.isActive ? "Да" : "Нет"}
-      </h1>
+    <div className="card user-profile">
+      <UserInfo user={user} />
+      <button
+        className="button"
+        onClick={() => setCounter((oldCouner) => oldCouner + 1)}
+      >
+        Кликов: {counter}
+      </button>
       <button
         className="button"
         onClick={() =>
@@ -51,7 +56,7 @@ const UserProfile = () => {
       >
         Переключить активность
       </button>
-    </>
+    </div>
   );
 };
 

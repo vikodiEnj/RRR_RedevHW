@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import CartItem from "./cartItem";
+
 const GoodsBusket = () => {
   const [cart, setCart] = useState([
     { id: 1, title: "Футболка", count: 1 },
@@ -9,36 +11,28 @@ const GoodsBusket = () => {
     { id: 6, title: "Перчатки", count: 1 },
     { id: 7, title: "Сандали", count: 1 },
   ]);
+
+  const handleIncrement = useCallback((id) => {
+    setCart((oldCart) =>
+      oldCart.map((item) =>
+        item.id === id ? { ...item, count: item.count + 1 } : item,
+      ),
+    );
+  }, []);
+  const handleRemove = useCallback((id) => {
+    setCart((oldCart) => oldCart.filter((item) => item.id !== id));
+  }, []);
   return (
     <>
       {cart.map((pos) => (
-        <h3 key={pos.id}>
-          {pos.title} "(Кол-во: {pos.count})"{" "}
-          <button
-            className="button"
-            onClick={() =>
-              setCart((oldCart) =>
-                oldCart.map((item) =>
-                  item.id === pos.id
-                    ? { ...item, count: item.count + 1 }
-                    : item,
-                ),
-              )
-            }
-          >
-            +1
-          </button>
-          <button
-            className="button"
-            onClick={() =>
-              setCart((oldCart) => oldCart.filter((item) => item.id !== pos.id))
-            }
-          >
-            Удалить
-          </button>
-        </h3>
+        <CartItem
+          key={pos.id}
+          pos={pos}
+          onIncrement={handleIncrement}
+          onRemove={handleRemove}
+        />
       ))}
-      <button className="button" onClick={() => setCart((oldCart) => [])}>
+      <button className="button" onClick={() => setCart([])}>
         Очистить корзину
       </button>
     </>
