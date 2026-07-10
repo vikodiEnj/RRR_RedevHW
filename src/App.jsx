@@ -1,13 +1,15 @@
-import { useState } from "react";
 import "./App.css";
-import CustomProps from "./CustomProps";
+import UserProfile from "./userProfile";
+import TaskList from "./taskList";
+import GoodsBusket from "./goodsBusket";
 
 function App() {
   return (
-    <>
-      <CustomProps title={"chłopaki"} hi={"Cześć"} />
-      <CustomProps title={"developers"} hi={"Hello"} />
-    </>
+    <div className="app">
+      <UserProfile />
+      <TaskList />
+      <GoodsBusket />
+    </div>
   );
 }
 
