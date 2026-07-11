@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import withRenderTracker from "./WithRenderTracker";
 
 const ItemList = ({ items, search }) => {
   console.log("ItemList rerendered");
@@ -16,4 +17,4 @@ const ItemList = ({ items, search }) => {
   );
 };
 
-export default React.memo(ItemList);
+export default React.memo(withRenderTracker(ItemList));

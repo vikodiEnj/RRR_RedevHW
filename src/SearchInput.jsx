@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import withRenderTracker from "./WithRenderTracker";
 
 const SearchInput = ({ handleSearch }) => {
   console.log("SearchInput rerendered");
@@ -11,4 +12,4 @@ const SearchInput = ({ handleSearch }) => {
   );
 };
 
-export default React.memo(SearchInput);
+export default React.memo(withRenderTracker(SearchInput));

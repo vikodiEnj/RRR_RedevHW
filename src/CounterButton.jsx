@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import withRenderTracker from "./WithRenderTracker";
 
 const CounterButton = ({ count, increment }) => {
   console.log("CounterButton rerendered");
@@ -10,4 +11,4 @@ const CounterButton = ({ count, increment }) => {
   );
 };
 
-export default React.memo(CounterButton);
+export default React.memo(withRenderTracker(CounterButton));
