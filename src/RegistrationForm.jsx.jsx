@@ -1,19 +1,37 @@
-import React from "react";
-import { useForm } from "react-hook-form";
-import { useState } from "react";
+import React, { useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { IMaskInput } from "react-imask";
+import {
+  TextField,
+  Button,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormLabel,
+  FormControl,
+  FormHelperText,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Box,
+} from "@mui/material";
 
 const RegistrationForm = () => {
   const {
     register,
     handleSubmit,
     watch,
+    control,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      phoneNumber: "+375 (",
+      gender: "",
     },
     mode: "onTouched",
   });
+
+  const [submittedData, setSubmittedData] = useState(null);
 
   const onSubmit = (data) => {
     setSubmittedData(data);
@@ -21,58 +39,30 @@ const RegistrationForm = () => {
 
   const password = watch("password");
 
-  const [submittedData, setSubmittedData] = useState(null);
-
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input
-          placeholder="Имя"
+    <Box
+      sx={{
+        maxWidth: 420,
+        mx: "auto",
+        mt: 4,
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
+      }}
+    >
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        style={{ display: "flex", flexDirection: "column", gap: 16 }}
+      >
+        <TextField
+          label="Имя"
           {...register("name", { required: "Укажите имя" })}
+          error={!!errors.name}
+          helperText={errors.name?.message}
         />
-        {errors.name && <p>{errors.name.message}</p>}
 
-        <div>
-          Выберите пол
-          <label>
-            <input
-              type="radio"
-              {...register("gender", { required: "Выберите пол" })}
-              value="male"
-            />
-            Мужской
-          </label>
-          <label>
-            <input
-              type="radio"
-              {...register("gender", { required: "Выберите пол" })}
-              value="female"
-            />
-            Женский
-          </label>
-        </div>
-        {errors.gender && <p>{errors.gender.message}</p>}
-
-        <input
-          type="date"
-          {...register("birthDate", { required: "Укажите дату" })}
-        />
-        {errors.birthDate && <p>{errors.birthDate.message}</p>}
-
-        <input
-          placeholder="Номер телефона"
-          {...register("phoneNumber", {
-            required: "Укажите номер телефона",
-            pattern: {
-              value: /^\+375 \(\d{2}\) \d{7}$/,
-              message: "Формат: +375 (29) 1234567",
-            },
-          })}
-        />
-        {errors.phoneNumber && <p>{errors.phoneNumber.message}</p>}
-
-        <input
-          placeholder="Введите почту"
+        <TextField
+          label="Электронная почта"
           {...register("email", {
             required: "Поле обязательно для заполнения",
             pattern: {
@@ -80,44 +70,113 @@ const RegistrationForm = () => {
               message: "Введите корректный email",
             },
           })}
+          error={!!errors.email}
+          helperText={errors.email?.message}
         />
-        {errors.email && <p>{errors.email.message}</p>}
 
-        <input
-          placeholder="Пароль"
+        <TextField
+          label="Пароль"
+          type="password"
           {...register("password", {
             required: "Укажите пароль",
-            minLength: {
-              value: 6,
-              message: "Минимум 6 символов",
-            },
+            minLength: { value: 6, message: "Минимум 6 символов" },
             pattern: {
               value: /[A-ZА-Я]/,
               message: "Пароль должен содержать минимум одну заглавную букву",
             },
           })}
+          error={!!errors.password}
+          helperText={errors.password?.message}
         />
-        {errors.password && <p>{errors.password.message}</p>}
-        <input
-          placeholder="Подтвердите пароль"
+
+        <TextField
+          label="Подтвердите пароль"
+          type="password"
           {...register("confirmPassword", {
             required: "Подтвердите пароль",
             validate: (value) => value === password || "Пароли не совпадают",
           })}
+          error={!!errors.confirmPassword}
+          helperText={errors.confirmPassword?.message}
         />
-        {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
 
-        <button type="submit">Отправить</button>
+        <TextField
+          label="Дата рождения"
+          type="date"
+          slotProps={{ inputLabel: { shrink: true } }}
+          {...register("birthDate", { required: "Укажите дату" })}
+          error={!!errors.birthDate}
+          helperText={errors.birthDate?.message}
+        />
+
+        <Controller
+          name="phoneNumber"
+          control={control}
+          rules={{
+            required: "Укажите номер телефона",
+            pattern: {
+              value: /^\+375 \(\d{2}\) \d{3}-\d{2}-\d{2}$/,
+              message: "Введите номер полностью",
+            },
+          }}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="Номер телефона"
+              error={!!errors.phoneNumber}
+              helperText={errors.phoneNumber?.message}
+              slotProps={{
+                input: {
+                  inputComponent: IMaskInput,
+                  inputProps: {
+                    mask: "+375 (00) 000-00-00",
+                  },
+                },
+              }}
+            />
+          )}
+        />
+
+        <Controller
+          name="gender"
+          control={control}
+          rules={{ required: "Выберите пол" }}
+          render={({ field }) => (
+            <FormControl error={!!errors.gender}>
+              <FormLabel>Пол</FormLabel>
+              <RadioGroup row {...field}>
+                <FormControlLabel
+                  value="male"
+                  control={<Radio />}
+                  label="Мужской"
+                />
+                <FormControlLabel
+                  value="female"
+                  control={<Radio />}
+                  label="Женский"
+                />
+              </RadioGroup>
+              <FormHelperText>{errors.gender?.message}</FormHelperText>
+            </FormControl>
+          )}
+        />
+
+        <Button type="submit" variant="contained">
+          Зарегистрироваться
+        </Button>
       </form>
 
-      {submittedData && (
-        <div>
-          <h3>Успешно зарегистрировано!</h3>
+      <Dialog open={!!submittedData} onClose={() => setSubmittedData(null)}>
+        <DialogTitle>Успешно зарегистрировано!</DialogTitle>
+        <DialogContent>
           <pre>{JSON.stringify(submittedData, null, 2)}</pre>
-          <button onClick={() => setSubmittedData(null)}>Закрыть</button>
-        </div>
-      )}
-    </>
+        </DialogContent>
+        <DialogActions>
+          {" "}
+          <Button onClick={() => setSubmittedData(null)}>Закрыть</Button>{" "}
+        </DialogActions>
+      </Dialog>
+    </Box>
   );
 };
 
