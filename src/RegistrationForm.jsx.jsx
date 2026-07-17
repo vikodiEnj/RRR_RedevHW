@@ -26,6 +26,7 @@ const RegistrationForm = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
+      phoneNumber: "",
       gender: "",
     },
     mode: "onTouched",
