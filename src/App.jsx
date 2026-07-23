@@ -1,13 +1,21 @@
-import { useState } from "react";
 import "./App.css";
-import CustomProps from "./CustomProps";
+import { Routes, Route } from "react-router";
+import Home from "./Home";
+import TopicPage from "./TopicPage";
+import { useState, useEffect } from "react";
 
 function App() {
+  const [theme, setTheme] = useState("light");
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
+  const toggleTheme = () =>
+    setTheme((prev) => (prev === "light" ? "dark" : "light"));
   return (
-    <>
-      <CustomProps title={"chłopaki"} hi={"Cześć"} />
-      <CustomProps title={"developers"} hi={"Hello"} />
-    </>
+    <Routes>
+      <Route path="/" element={<Home toggleTheme={toggleTheme} />} />
+      <Route path="/:id" element={<TopicPage />} />
+    </Routes>
   );
 }
 
